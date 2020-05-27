@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 
 public class Base {
@@ -82,6 +83,25 @@ public class Base {
 			 xpath = match.group(1);
 		}
 		return xpath;
+	}
+	public static long registerTime;
+	public static void iwait(long timer) {
+		try {
+			System.out.println("wait in " + timer + " milisecs");
+			Thread.sleep(timer);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+	public void click(WebElement webElement, long timer) {
+		System.out.println("click");
+		webElement.click();
+		iwait(timer);
+	}
+	public void type(String keysToSend, WebElement webElement) {
+		System.out.println("type " + keysToSend + " into " + webElement);
+		webElement.sendKeys(keysToSend);
 	}
 	
 }

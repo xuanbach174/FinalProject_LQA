@@ -34,7 +34,8 @@ public class Homepage extends Base {
 	By PROCEED_CHECKOUT_BUTT = By.xpath("//*[@title=\"Proceed to checkout\"]");
 	By PRICE_REDUCTION_PRODUCT = By.xpath("//*[@class=\"product_list grid row homefeatured tab-pane active\"]/li//div[@class=\"right-block\"]//*[@class=\"price-percent-reduction\"]");
 	String ADDCART = "(//*[@id=\"homefeatured\"]//*[@title=\"Add to cart\"])[{param}]";
-	
+
+
 	
 	List<WebElement> addcart;
 	public By SUGG_SEARCH_BOX = By.xpath("//*[@class = \"ac_results\"]");
@@ -212,6 +213,15 @@ public class Homepage extends Base {
 		Random rd = new Random();
 		int random_pick = rd.nextInt(maxproduct) + 1;
 		driver.findElement(By.xpath("//*[@id=\"homefeatured\"]/li["+ random_pick +"]")).click();
+		return new ProductDetail(driver);
+	}
+	public ProductDetail viewDetailProductDA() {
+		addcart = driver.findElements(ADDCART_BUTTON);
+		int maxproduct = addcart.size();
+		Random rd = new Random();
+		int random_pick = rd.nextInt(maxproduct) + 1;
+		//*[@id="homefeatured"]/li[1]/div/div[1]/div/a[1]/img
+		driver.findElement(By.xpath("//*[@id=\"homefeatured\"]/li["+ random_pick +"]/div/div[1]/div/a[1]/img")).click();
 		return new ProductDetail(driver);
 	}
 	
