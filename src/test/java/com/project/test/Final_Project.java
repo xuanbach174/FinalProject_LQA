@@ -8,6 +8,7 @@ import com.project.pages.AddPage;
 import com.project.pages.ContactNotifPage;
 import com.project.pages.ContactPage;
 import com.project.pages.DataTestDTO;
+import com.project.pages.GooglePage;
 import com.project.pages.Homepage;
 import com.project.pages.Login;
 import com.project.pages.MyAccount;
@@ -21,6 +22,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,30 +53,29 @@ public class Final_Project {
 	public static HSSFWorkbook workbook;
 	public static HSSFSheet worksheet;
 	public static DataFormatter formatter = new DataFormatter();
-	
 
 	@DataProvider(name = "multipleTest")
 	public Object[] ReadVariant(Method mtd) throws IOException {
 
 		DataTest datatest = new DataTest();
 		List<DataTestDTO> listDataTestDTO = new ArrayList<DataTestDTO>();
-		//Data cho TC1
+		// Data cho TC1
 		if (mtd.getName().equalsIgnoreCase("createInvalidEmail")) {
 			listDataTestDTO = datatest.readExcelTC1();
 		}
-		//Data cho TC2
+		// Data cho TC2
 		else if (mtd.getName().equalsIgnoreCase("creatEmail")) {
 			listDataTestDTO = datatest.readExcelTC2();
 		}
-		
-		//Transfer Data tu ArrayList to Array and return (no edit)
+
+		// Transfer Data tu ArrayList to Array and return (no edit)
 		DataTestDTO[] arrayDataTestDTO = new DataTestDTO[listDataTestDTO.size()];
-		for(int index = 0; index < listDataTestDTO.size(); index ++) {
+		for (int index = 0; index < listDataTestDTO.size(); index++) {
 			arrayDataTestDTO[index] = listDataTestDTO.get(index);
 		}
 		return arrayDataTestDTO;
 	}
-	
+
 //TC01
 	@Test(enabled = true, dataProvider = "multipleTest")
 	public void createInvalidEmail(DataTestDTO dataTestDTO) {
@@ -263,7 +264,7 @@ public class Final_Project {
 
 	}
 
-	//TC09
+	// TC09
 	@Test(enabled = true)
 	public void interrupCheckOut() throws InterruptedException {
 		String webLink = "http://automationpractice.com";
@@ -273,20 +274,20 @@ public class Final_Project {
 		MyAccount myacc = login.login();
 		myacc.goHomePage();
 		Thread.sleep(2000);
-		//Add san pham muon mua
+		// Add san pham muon mua
 		home.addCart2();
-		//Move den page checkout
+		// Move den page checkout
 		ShoppingCart shopcart = home.checkOut();
-		
-		//Thay doi so luong san pham + xoa san pham
+
+		// Thay doi so luong san pham + xoa san pham
 		shopcart.changeNumberOfProducts();
 		Thread.sleep(3000);
-		//Tinh gia tien tren so san pham
+		// Tinh gia tien tren so san pham
 		double totalunitprice = shopcart.checkTotalUnitPrice();
-		//Check total price is correct
+		// Check total price is correct
 		double totoproductsprice = Double.valueOf(shopcart.getValuePrice());
 		assertEquals(totalunitprice, totoproductsprice);
-		//Thuc hien cac buoc de checkout
+		// Thuc hien cac buoc de checkout
 		AddPage addpage = shopcart.checkOut();
 		ShipPage shippage = addpage.clickCheckOut();
 		shippage.clickCheckOutWithoutClickCheckBox();
@@ -298,72 +299,92 @@ public class Final_Project {
 		assertEquals(payment.getNotifAfterPay(), "Your order on My Store is complete.");
 	}
 
-	//TC10
+	// TC10
 	@Test
-	public void purchaseReductionProduct () {
+	public void purchaseReductionProduct() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
 		Homepage home = new Homepage(driver);
 		Login login = home.clickLoginButton();
 		MyAccount myacc = login.login();
 		myacc.goHomePage();
-		//Tìm sản phẩm nào đang giảm giá 20%
+		// Tìm sản phẩm nào đang giảm giá 20%
 		By Reductionproduct = home.foundReductionProduct("-20%");
-		//Add sản phẩm đang giảm giá vào giỏ
+		// Add sản phẩm đang giảm giá vào giỏ
 		home.addCartReductionProduct(Reductionproduct);
-		//Thực hiện các bước checkout
+		// Thực hiện các bước checkout
 		ShoppingCart shopcart = home.checkOut();
 		AddPage addpage = shopcart.checkOut();
 		ShipPage shippage = addpage.clickCheckOut();
 		PaymentMethodPage payment = shippage.clickCheckOut();
 		payment.choosePayment();
-		//Kiểm tra xem checkout đã thành công hay chưa
+		// Kiểm tra xem checkout đã thành công hay chưa
 		assertEquals(payment.getNotifAfterPay(), "Your order on My Store is complete.");
 	}
-	
-	
-	//TC11 khong getlocation duoc
-		@Test (enabled = true)
+
+	// TC11 khong getlocation duoc
+	@Test(enabled = true)
+
+	public void testCase11_1() throws InterruptedException {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+
+		productdetail.getWidthHeightProfileImg();
+		System.out.println(productdetail.widthprofileimg);
+
+		productdetail.clickProfilePictureOfProduct();
+		productdetail.getWidthHeightLargeImg();
+		productdetail.getLocationLargeImg();
+		productdetail.getLocationProductName();
+		System.out.println(productdetail.widthlargeimg);
+		System.out.println(productdetail.largepictureproductY);
+		System.out.println(productdetail.productname);
+	}
+
+	// TC12
+	@Test(enabled = true)
+	public void sharetoTwitter() {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		// Vào viewdetail 1 sản pham bat ki
+		ProductDetail productdetail = home.viewDetailProduct();
+		// Click vao nut twitter
+		productdetail.clickTwitterButton();
+		// Dang nhap va share, dong thoi share lan hai de xac dinh da share thanh cong
+		String notification_when_click_submit = productdetail.fillInfoToLoginTwitter();
+		// Share thanh cong thi khi click Share lan 2 se thong bao loi
+		String expect_message = "You have already sent this Tweet.";
+		assertEquals(notification_when_click_submit, expect_message);
+	}
+
+	// TC14
+	// TODO
+	@Test (priority = 1)
+	public void sendToFriend() {
+		System.out.println("Send to friend");
+		String webLink = "http://automationpractice.com/index.php";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProductDA();
+		productdetail.clickSendFriendButton();
+		productdetail.inputDataSendFriendEmail("abc", "xyz");
+		productdetail.clickSendEmailButton();
 		
-		public void testCase11_1 () throws InterruptedException{
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			ProductDetail productdetail = home.viewDetailProduct();
-			
-			productdetail.getWidthHeightProfileImg();
-			System.out.println(productdetail.widthprofileimg);
-			
-			productdetail.clickProfilePictureOfProduct();
-			productdetail.getWidthHeightLargeImg();
-			productdetail.getLocationLargeImg();
-			productdetail.getLocationProductName();
-			System.out.println(productdetail.widthlargeimg);
-			System.out.println(productdetail.largepictureproductY);
-			System.out.println(productdetail.productname);
-		}
-		
-	//TC12 
-		@Test (enabled = true)
-		public void sharetoTwitter () {
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			//Vào viewdetail 1 sản pham bat ki
-			ProductDetail productdetail = home.viewDetailProduct();
-			//Click vao nut twitter
-			productdetail.clickTwitterButton();
-			//Dang nhap va share, dong thoi share lan hai de xac dinh da share thanh cong
-			String notification_when_click_submit = productdetail.fillInfoToLoginTwitter();
-			//Share thanh cong thi khi click Share lan 2 se thong bao loi
-			String expect_message = "You have already sent this Tweet.";
-			assertEquals(notification_when_click_submit, expect_message);
-		}
+		GooglePage googlePage = new GooglePage(driver);
+		boolean flag = googlePage.verifyInEmailWithPin("anhld.lqa@gmail.com", "Lqa213465");
+		assertTrue(flag);
+		System.out.println();
+	}
+
 	@BeforeMethod
 	public void beforeMethod() {
-		System.setProperty("webdriver.chrome.driver", "D:\\Study\\Selenium\\driver\\chromedriver.exe");
+//		System.setProperty("webdriver.chrome.driver", "D:\\Study\\Selenium\\driver\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", ".\\webdriver\\chromedriver.exe");
 		driver = new ChromeDriver();
-		driver.manage().window().maximize();
+//		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 

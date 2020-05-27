@@ -17,7 +17,14 @@ public class ProductDetail extends Base{
 	By LOGIN_TWITTER_BUTTON = By.xpath("//*[@type=\"submit\"]");	
 	By SUBMIT_SHARE_BUTTON = By.xpath("//*[@class=\"button selected submit\"]");
 	By NOTIF_TWITTER = 	By.xpath("//*[@id=\"post-error\"]");
-	
+	By SEND_FRIEND_BUTTON = By.id("send_friend_button");
+	By FRIEND_NAME = By.id("friend_name");
+	By FRIEND_EMAIL = By.id("friend_email");
+	By SEND_EMAIL_BUTTON = By.id("sendEmail");
+	//*[@id="send_friend_button"]
+	//*[@id="friend_name"]
+	//*[@id="friend_email"]
+	//*[@id="sendEmail"]
 	
 	public int widthlargeimg;
 	public int heightlargeimg;
@@ -94,6 +101,24 @@ public class ProductDetail extends Base{
 		 driver.findElement(SUBMIT_SHARE_BUTTON).click();
 		 String notification_when_click_submit = driver.findElement(NOTIF_TWITTER).getText();
 		return notification_when_click_submit;
+	}
+	//TODO
+	public void clickSendFriendButton() {
+		driver.findElement(SEND_FRIEND_BUTTON).click();
+	}
+	public void setFriendName(String friendName) {
+		driver.findElement(FRIEND_NAME).sendKeys(friendName);
+	}
+	public void setFriendEmail(String friendEmail) {
+		driver.findElement(FRIEND_EMAIL).sendKeys(friendEmail);
+	}
+	public void clickSendEmailButton() {
+		driver.findElement(SEND_EMAIL_BUTTON).click();
+	}
+	
+	public void inputDataSendFriendEmail(String name, String email){
+		setFriendName(name);
+		setFriendEmail(email);
 	}
 	
 }
