@@ -32,7 +32,7 @@ public class GooglePage extends Base {
 	By EMAIL_NEXT = By.id("identifierNext");
 	By PASSWORD = By.xpath("//*[@id=\"password\"]//input");
 	By PASSWORD_NEXT = By.xpath("//*[@id=\"passwordNext\"]/span/span");
-	By WELCOME_MAIL = By.xpath("(//span[contains(text(),'Welcome to FXPRIMUS! Please Verify')])[2]");
+	By WELCOME_MAIL = By.xpath("(//span[contains(text(),'automationpractice')])[2]");
 	public GooglePage(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -131,9 +131,11 @@ public class GooglePage extends Base {
 		this.clickEmailNext();
 		this.setPassword(passwordStr);
 		this.clickPasswordNext();
-
+		iwait(2000);
 		if (!isExistUnreadEmail()) {
 			System.out.println("Not exist unread email");
+			flag =  false;
+			return flag;
 		}
 		try {
 			iwait(2000);

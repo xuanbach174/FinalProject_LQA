@@ -21,6 +21,16 @@ public class ProductDetail extends Base{
 	By FRIEND_NAME = By.id("friend_name");
 	By FRIEND_EMAIL = By.id("friend_email");
 	By SEND_EMAIL_BUTTON = By.id("sendEmail");
+	By MESS_SEND_FRIEND_EMAIL = By.xpath("//p[contains(text(),'Your e-mail has been sent successfully')]");
+	By WRITE_A_REVIEW = By.xpath("//a[contains(text(),'Write a review')]");
+	By REVIEW_TITLE = By.id("comment_title");
+	By REVIEW_CONTENT = By.id("content");
+	By SEND_REVIEW_BUTTON = By.id("submitNewMessage");
+	By MESS_WRITE_A_REVIEW = By.xpath("//*[@id=\"product\"]/div[2]/div/div/div/p[contains(text(),'Your comment has been added and will be available once approved by a moderator')]");
+	//*[@id="comment_title"]
+	//*[@id="content"]
+	//*[@id="submitNewMessage"]
+	
 	//*[@id="send_friend_button"]
 	//*[@id="friend_name"]
 	//*[@id="friend_email"]
@@ -116,9 +126,37 @@ public class ProductDetail extends Base{
 		driver.findElement(SEND_EMAIL_BUTTON).click();
 	}
 	
+	public boolean sendFriendEmailSuccessfully() {
+		return isElementPresent(MESS_SEND_FRIEND_EMAIL);
+	}
+	
 	public void inputDataSendFriendEmail(String name, String email){
 		setFriendName(name);
 		setFriendEmail(email);
 	}
+	
+	public void clickWriteAReview() {
+		driver.findElement(WRITE_A_REVIEW).click();
+	}
+	
+	public void setReviewTitle(String title) {
+		driver.findElement(REVIEW_TITLE).sendKeys(title);
+	}
+	
+	public void setReviewContent(String content) {
+		driver.findElement(REVIEW_CONTENT).sendKeys(content);
+	}
+	public void inputDataWriteAReview(String title, String content){
+		setReviewTitle(title);
+		setReviewContent(content);
+	}
+	public void clickSendReview() {
+		driver.findElement(SEND_REVIEW_BUTTON).click();
+	}
+
+	public boolean writeAReviewSuccessfully() {
+		return isElementPresent(MESS_WRITE_A_REVIEW);
+	}
+	
 	
 }

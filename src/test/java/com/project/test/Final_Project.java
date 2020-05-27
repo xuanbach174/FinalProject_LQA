@@ -362,7 +362,7 @@ public class Final_Project {
 
 	// TC14
 	// TODO
-	@Test (priority = 1)
+	@Test (priority = 2)
 	public void sendToFriend() {
 		System.out.println("Send to friend");
 		String webLink = "http://automationpractice.com/index.php";
@@ -370,13 +370,38 @@ public class Final_Project {
 		Homepage home = new Homepage(driver);
 		ProductDetail productdetail = home.viewDetailProductDA();
 		productdetail.clickSendFriendButton();
-		productdetail.inputDataSendFriendEmail("abc", "xyz");
+		productdetail.inputDataSendFriendEmail("Lqa213465", "anhld.lqa@gmail.com");
 		productdetail.clickSendEmailButton();
-		
-		GooglePage googlePage = new GooglePage(driver);
-		boolean flag = googlePage.verifyInEmailWithPin("anhld.lqa@gmail.com", "Lqa213465");
-		assertTrue(flag);
+		boolean flag;
+		if(productdetail.sendFriendEmailSuccessfully()) {
+			GooglePage googlePage = new GooglePage(driver);
+			flag = googlePage.verifyInEmailWithPin("anhld.lqa@gmail.com", "Lqa213465");
+		}
+		else {
+			flag = false;
+		}
+		assertTrue(flag, "Can not send friend email");
 		System.out.println();
+	}
+	//TC13
+	@Test (priority = 1)
+	public void writeAComment() {
+		System.out.println("Write a comment");
+		String webLink = "http://automationpractice.com/index.php";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		
+		Login login = home.clickLoginButton();
+		MyAccount myacc = login.login();
+		myacc.goHomePage();
+		
+		ProductDetail productdetail = home.viewDetailProductDA();
+		productdetail.clickWriteAReview();
+		productdetail.inputDataWriteAReview("title", "content");
+		productdetail.clickSendReview();
+		boolean flag;
+		flag = productdetail.writeAReviewSuccessfully();
+		assertTrue(flag, "Can send review");
 	}
 
 	@BeforeMethod
