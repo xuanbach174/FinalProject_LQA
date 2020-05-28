@@ -10,6 +10,12 @@ import org.openqa.selenium.WebElement;
 public class ShoppingCart extends Base {
 	By PROCEED_CHECKOUT =  By.xpath("//*[@class=\"cart_navigation clearfix\"]/*[@title=\"Proceed to checkout\"]");
 	By TOTAL_PRODUCTS_PRICE = By.xpath("//*[@id=\"total_product\"]");
+	public By ITEM_NAME = By.xpath("//tbody/tr//p[@class=\"product-name\"]/a");
+	public By ITEM_QUANTITY = By.xpath("//*[contains(@class,\"cart_quantity_input\")]");
+
+
+	
+	
 	public ShoppingCart(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -51,5 +57,12 @@ public class ShoppingCart extends Base {
 		return totalunitprice;
 	}
 	
+	public String getItemName() {
+		return driver.findElement(ITEM_NAME).getText();
+	}
+	
+	public int getItemQuantity() {
+		return Integer.parseInt(driver.findElement(ITEM_QUANTITY).getAttribute("value"));
+	}
 	
 }

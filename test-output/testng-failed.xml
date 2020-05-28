@@ -7,7 +7,7 @@
         <methods>
           <include name="beforeMethod"/>
           <include name="afterMethod"/>
-          <include name="sharetoTwitter"/>
+          <include name="testCase11_1"/>
         </methods>
       </class> <!-- com.project.test.Final_Project -->
     </classes>

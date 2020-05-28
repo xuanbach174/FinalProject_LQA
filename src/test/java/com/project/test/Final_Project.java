@@ -324,24 +324,70 @@ public class Final_Project {
 	
 	//TC11 khong getlocation duoc
 		@Test (enabled = true)
-		
 		public void testCase11_1 () throws InterruptedException{
 			String webLink = "http://automationpractice.com";
 			driver.get(webLink);
 			Homepage home = new Homepage(driver);
 			ProductDetail productdetail = home.viewDetailProduct();
 			
-			productdetail.getWidthHeightProfileImg();
-			System.out.println(productdetail.widthprofileimg);
-			
-			productdetail.clickProfilePictureOfProduct();
-			productdetail.getWidthHeightLargeImg();
-			productdetail.getLocationLargeImg();
-			productdetail.getLocationProductName();
-			System.out.println(productdetail.widthlargeimg);
-			System.out.println(productdetail.largepictureproductY);
-			System.out.println(productdetail.productname);
+			String itemName = productdetail.getItemName();
+			productdetail.clickOnBigImage();
+			Thread.sleep(2000);
+			String actual = productdetail.getZoomedItemName();
+			assert(productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
+			assert(productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
+			assertEquals(actual, itemName);
 		}
+		
+		@Test(groups = {"Item Detail"})
+		public void TC11_2() throws InterruptedException {
+			String webLink = "http://automationpractice.com";
+			driver.get(webLink);
+			Homepage home = new Homepage(driver);
+			ProductDetail productdetail = home.viewDetailProduct();
+			
+			String itemName = productdetail.getItemName();
+			productdetail.clickOnBigImage();
+			productdetail.closeLargeImage();
+			productdetail.clickViewLargeButton();
+			Thread.sleep(1000);
+			assert(productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
+			assert(productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
+			assertEquals(productdetail.getZoomedItemName(), itemName);
+			}
+		
+		@Test(groups = {"Item Detail"})
+		public void TC11_3() {
+			String webLink = "http://automationpractice.com";
+			driver.get(webLink);
+			Homepage home = new Homepage(driver);
+			ProductDetail productdetail = home.viewDetailProduct();
+			
+			productdetail.changeQuantity("0");
+			productdetail.clickAddToCart();
+			productdetail.isElementPresent(productdetail.MSG_NULL_QUANTITY);
+			}
+		
+		@Test(groups = {"Item Detail"})
+		public void TC11_4() {
+			String webLink = "http://automationpractice.com";
+			driver.get(webLink);
+			Homepage home = new Homepage(driver);
+			ProductDetail productdetail = home.viewDetailProduct();
+
+			String itemName = productdetail.getItemName();
+			productdetail.changeQuantity("1");
+			productdetail.clickAddToCart();
+			assert(productdetail.isElementPresent(productdetail.MSG_ADD_SUCCESFUL));
+			productdetail.closeSuccesfulMessage();
+			ShoppingCart shopcart = productdetail.viewCart();
+			String cartItemName = shopcart.getItemName();
+			int cartItemQuantity = shopcart.getItemQuantity();
+			assertEquals(cartItemName, itemName);
+			assertEquals(cartItemQuantity, 1);
+		}
+		
+		
 		
 	//TC12 
 		@Test (enabled = true)
