@@ -1,13 +1,17 @@
 package com.project.test;
 
 import org.testng.annotations.Test;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.beust.jcommander.Parameter;
 import com.project.data.DataTest;
 import com.project.pages.AccountCreationPage;
 import com.project.pages.AddPage;
 import com.project.pages.ContactNotifPage;
 import com.project.pages.ContactPage;
 import com.project.pages.DataTestDTO;
+import com.project.pages.GooglePage;
 import com.project.pages.Homepage;
 import com.project.pages.Login;
 import com.project.pages.MyAccount;
@@ -19,64 +23,61 @@ import com.project.pages.ShoppingCart;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections4.map.HashedMap;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DataFormatter;
 
 public class Final_Project {
 	WebDriver driver;
+	String nodeURL;
 	public static HSSFWorkbook workbook;
 	public static HSSFSheet worksheet;
 	public static DataFormatter formatter = new DataFormatter();
-	
 
 	@DataProvider(name = "multipleTest")
 	public Object[] ReadVariant(Method mtd) throws IOException {
 
 		DataTest datatest = new DataTest();
 		List<DataTestDTO> listDataTestDTO = new ArrayList<DataTestDTO>();
-		//Data cho TC1
+		// Data cho TC1
 		if (mtd.getName().equalsIgnoreCase("createInvalidEmail")) {
 			listDataTestDTO = datatest.readExcelTC1();
 		}
-		//Data cho TC2
+		// Data cho TC2
 		else if (mtd.getName().equalsIgnoreCase("creatEmail")) {
 			listDataTestDTO = datatest.readExcelTC2();
 		}
-		
-		//Transfer Data tu ArrayList to Array and return (no edit)
+
+		// Transfer Data tu ArrayList to Array and return (no edit)
 		DataTestDTO[] arrayDataTestDTO = new DataTestDTO[listDataTestDTO.size()];
-		for(int index = 0; index < listDataTestDTO.size(); index ++) {
+		for (int index = 0; index < listDataTestDTO.size(); index++) {
 			arrayDataTestDTO[index] = listDataTestDTO.get(index);
 		}
 		return arrayDataTestDTO;
 	}
-	
+
 //TC01
-	@Test(enabled = true, dataProvider = "multipleTest")
+	@Test(groups = "CreateAccount", dataProvider = "multipleTest")
 	public void createInvalidEmail(DataTestDTO dataTestDTO) {
 		String webLink = "http://automationpractice.com/";
 		driver.get(webLink);
@@ -87,7 +88,7 @@ public class Final_Project {
 	}
 
 	// TC02
-	@Test(enabled = true, dataProvider = "multipleTest")
+	@Test(groups = "CreateAccount", dataProvider = "multipleTest")
 	public void creatEmail(DataTestDTO dataTestDTO) {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -99,7 +100,7 @@ public class Final_Project {
 	}
 
 	// TC03
-	@Test(enabled = false)
+	@Test(groups = "Newsletter")
 	public void checkEmail() {
 		String webLink = "https://www.guru99.com/selenium-tutorial.html";
 		driver.get(webLink);
@@ -126,7 +127,7 @@ public class Final_Project {
 	}
 
 	// TC04
-	@Test(enabled = false)
+	@Test(groups = "Contact Us")
 	public void checkEmailP2() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -138,7 +139,7 @@ public class Final_Project {
 	}
 
 	// TC05
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void checkSearchPlaceHolder() throws IOException, InterruptedException {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -150,7 +151,7 @@ public class Final_Project {
 	}
 
 	// TC06.1
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void searchkeyworkSuggestion() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -160,7 +161,7 @@ public class Final_Project {
 	}
 
 //TC06.2
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void compareSuggAndActual() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -182,7 +183,7 @@ public class Final_Project {
 	}
 
 //TC06.3
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void searchResult() throws InterruptedException {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -197,7 +198,7 @@ public class Final_Project {
 	}
 
 //TC06.4 
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void checkPriceInfo() throws InterruptedException {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -214,7 +215,7 @@ public class Final_Project {
 	}
 
 //TC07  
-	@Test(enabled = false)
+	@Test(groups = "Search")
 	public void checkNoSearchResult() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -228,7 +229,7 @@ public class Final_Project {
 	}
 
 	// TC08
-	@Test(enabled = false)
+	@Test(groups = "Shopping")
 	public void checkTotalPrice() throws InterruptedException {
 
 		// Step 1: Open site
@@ -263,8 +264,8 @@ public class Final_Project {
 
 	}
 
-	//TC09
-	@Test(enabled = true)
+	// TC09
+	@Test(groups = "Shopping")
 	public void interrupCheckOut() throws InterruptedException {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
@@ -273,20 +274,20 @@ public class Final_Project {
 		MyAccount myacc = login.login();
 		myacc.goHomePage();
 		Thread.sleep(2000);
-		//Add san pham muon mua
+		// Add san pham muon mua
 		home.addCart2();
-		//Move den page checkout
+		// Move den page checkout
 		ShoppingCart shopcart = home.checkOut();
-		
-		//Thay doi so luong san pham + xoa san pham
+
+		// Thay doi so luong san pham + xoa san pham
 		shopcart.changeNumberOfProducts();
 		Thread.sleep(3000);
-		//Tinh gia tien tren so san pham
+		// Tinh gia tien tren so san pham
 		double totalunitprice = shopcart.checkTotalUnitPrice();
-		//Check total price is correct
+		// Check total price is correct
 		double totoproductsprice = Double.valueOf(shopcart.getValuePrice());
 		assertEquals(totalunitprice, totoproductsprice);
-		//Thuc hien cac buoc de checkout
+		// Thuc hien cac buoc de checkout
 		AddPage addpage = shopcart.checkOut();
 		ShipPage shippage = addpage.clickCheckOut();
 		shippage.clickCheckOutWithoutClickCheckBox();
@@ -298,122 +299,197 @@ public class Final_Project {
 		assertEquals(payment.getNotifAfterPay(), "Your order on My Store is complete.");
 	}
 
-	//TC10
-	@Test
-	public void purchaseReductionProduct () {
+	// TC10
+	@Test(groups = "Shopping")
+	public void purchaseReductionProduct() {
 		String webLink = "http://automationpractice.com";
 		driver.get(webLink);
 		Homepage home = new Homepage(driver);
 		Login login = home.clickLoginButton();
 		MyAccount myacc = login.login();
 		myacc.goHomePage();
-		//Tìm sản phẩm nào đang giảm giá 20%
+		// Tìm sản phẩm nào đang giảm giá 20%
 		By Reductionproduct = home.foundReductionProduct("-20%");
-		//Add sản phẩm đang giảm giá vào giỏ
 		home.addCartReductionProduct(Reductionproduct);
-		//Thực hiện các bước checkout
+		// Thực hiện các bước checkout
 		ShoppingCart shopcart = home.checkOut();
 		AddPage addpage = shopcart.checkOut();
 		ShipPage shippage = addpage.clickCheckOut();
 		PaymentMethodPage payment = shippage.clickCheckOut();
 		payment.choosePayment();
-		//Kiểm tra xem checkout đã thành công hay chưa
+		// Kiểm tra xem checkout đã thành công hay chưa
 		assertEquals(payment.getNotifAfterPay(), "Your order on My Store is complete.");
 	}
-	
-	
-	//TC11 khong getlocation duoc
-		@Test (enabled = true)
-		public void testCase11_1 () throws InterruptedException{
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			ProductDetail productdetail = home.viewDetailProduct();
-			
-			String itemName = productdetail.getItemName();
-			productdetail.clickOnBigImage();
-			Thread.sleep(2000);
-			String actual = productdetail.getZoomedItemName();
-			assert(productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
-			assert(productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
-			assertEquals(actual, itemName);
-		}
-		
-		@Test(groups = {"Item Detail"})
-		public void TC11_2() throws InterruptedException {
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			ProductDetail productdetail = home.viewDetailProduct();
-			
-			String itemName = productdetail.getItemName();
-			productdetail.clickOnBigImage();
-			productdetail.closeLargeImage();
-			productdetail.clickViewLargeButton();
-			Thread.sleep(1000);
-			assert(productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
-			assert(productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
-			assertEquals(productdetail.getZoomedItemName(), itemName);
-			}
-		
-		@Test(groups = {"Item Detail"})
-		public void TC11_3() {
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			ProductDetail productdetail = home.viewDetailProduct();
-			
-			productdetail.changeQuantity("0");
-			productdetail.clickAddToCart();
-			productdetail.isElementPresent(productdetail.MSG_NULL_QUANTITY);
-			}
-		
-		@Test(groups = {"Item Detail"})
-		public void TC11_4() {
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			ProductDetail productdetail = home.viewDetailProduct();
 
-			String itemName = productdetail.getItemName();
-			productdetail.changeQuantity("1");
-			productdetail.clickAddToCart();
-			assert(productdetail.isElementPresent(productdetail.MSG_ADD_SUCCESFUL));
-			productdetail.closeSuccesfulMessage();
-			ShoppingCart shopcart = productdetail.viewCart();
-			String cartItemName = shopcart.getItemName();
-			int cartItemQuantity = shopcart.getItemQuantity();
-			assertEquals(cartItemName, itemName);
-			assertEquals(cartItemQuantity, 1);
-		}
-		
-		
-		
-	//TC12 
-		@Test (enabled = true)
-		public void sharetoTwitter () {
-			String webLink = "http://automationpractice.com";
-			driver.get(webLink);
-			Homepage home = new Homepage(driver);
-			//Vào viewdetail 1 sản pham bat ki
-			ProductDetail productdetail = home.viewDetailProduct();
-			//Click vao nut twitter
-			productdetail.clickTwitterButton();
-			//Dang nhap va share, dong thoi share lan hai de xac dinh da share thanh cong
-			String notification_when_click_submit = productdetail.fillInfoToLoginTwitter();
-			//Share thanh cong thi khi click Share lan 2 se thong bao loi
-			String expect_message = "You have already sent this Tweet.";
-			assertEquals(notification_when_click_submit, expect_message);
-		}
-	@BeforeMethod
-	public void beforeMethod() {
-		System.setProperty("webdriver.chrome.driver", "D:\\Study\\Selenium\\driver\\chromedriver.exe");
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	// TC11 khong getlocation duoc
+	@Test(groups = "Item Detail")
+	public void testCase11_1() throws InterruptedException {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+
+		productdetail.clickOnBigImage();
+		Thread.sleep(2000);
+		String itemName = productdetail.getItemName();
+		String actual = productdetail.getZoomedItemName();
+		assert (productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
+		assert (productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
+		assertEquals(actual, itemName);
 	}
 
-	@AfterMethod
+	@Test(groups = { "Item Detail" })
+	public void TC11_2() throws InterruptedException {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+
+		productdetail.clickOnBigImage();
+		productdetail.closeLargeImage();
+		productdetail.clickViewLargeButton();
+		Thread.sleep(1000);
+		String itemName = productdetail.getItemName();
+		assert (productdetail.isElementPresent(productdetail.ZOOMED_PICTURE));
+		assert (productdetail.isElementPresent(productdetail.ZOOMED_ITEM_NAME));
+		assertEquals(productdetail.getZoomedItemName(), itemName);
+	}
+
+	@Test(groups = { "Item Detail" })
+	public void TC11_3() {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+
+		productdetail.changeQuantity("0");
+		productdetail.clickAddToCart();
+		productdetail.isElementPresent(productdetail.MSG_NULL_QUANTITY);
+	}
+
+	@Test(groups = { "Item Detail" })
+	public void TC11_4() {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+
+		productdetail.changeQuantity("1");
+		String itemName = productdetail.getItemName();
+		productdetail.clickAddToCart();
+		assert (productdetail.isElementPresent(productdetail.MSG_ADD_SUCCESFUL));
+		productdetail.closeSuccesfulMessage();
+		ShoppingCart shopcart = productdetail.viewCart();
+		String cartItemName = shopcart.getItemName();
+		int cartItemQuantity = shopcart.getItemQuantity();
+		assertEquals(cartItemName, itemName);
+		assertEquals(cartItemQuantity, 1);
+	}
+
+	// TC12
+	@Test(groups = "Item Detail")
+	public void sharetoTwitter() {
+		String webLink = "http://automationpractice.com";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		// Vào viewdetail 1 sản pham bat ki
+		ProductDetail productdetail = home.viewDetailProduct();
+		// Click vao nut twitter
+		productdetail.clickTwitterButton();
+		// Dang nhap va share, dong thoi share lan hai de xac dinh da share thanh cong
+		String notification_when_click_submit = productdetail.fillInfoToLoginTwitter();
+		// Share thanh cong thi khi click Share lan 2 se thong bao loi
+		String expect_message = "You have already sent this Tweet.";
+		assertEquals(notification_when_click_submit, expect_message);
+	}
+
+	// TC13
+	@Test(groups = "Item Detail")
+	public void writeAComment() {
+		System.out.println("Write a comment");
+		String webLink = "http://automationpractice.com/index.php";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+
+		Login login = home.clickLoginButton();
+		MyAccount myacc = login.login();
+		myacc.goHomePage();
+
+		ProductDetail productdetail = home.viewDetailProduct();
+		productdetail.clickWriteAReview();
+		productdetail.inputDataWriteAReview("title", "content");
+		productdetail.clickSendReview();
+		boolean flag;
+		flag = productdetail.writeAReviewSuccessfully();
+		assertTrue(flag, "Can send review");
+	}
+
+	// TC14
+	// TODO
+	@Test(groups = "Item Detail")
+	public void sendToFriend() {
+		System.out.println("Send to friend");
+		String webLink = "http://automationpractice.com/index.php";
+		driver.get(webLink);
+		Homepage home = new Homepage(driver);
+		ProductDetail productdetail = home.viewDetailProduct();
+		productdetail.clickSendFriendButton();
+		productdetail.inputDataSendFriendEmail("Lqa213465", "anhld.lqa@gmail.com");
+		productdetail.clickSendEmailButton();
+		boolean flag;
+		if (productdetail.sendFriendEmailSuccessfully()) {
+			GooglePage googlePage = new GooglePage(driver);
+			flag = googlePage.verifyInEmailWithPin("anhld.lqa@gmail.com", "Lqa213465");
+		} else {
+			flag = false;
+		}
+		assertTrue(flag, "Can not send friend email");
+		System.out.println();
+	}
+
+	@Test
+    public void sampleTest() {
+        driver.get("http://demo.guru99.com/test/guru99home/");
+        
+
+        if (driver.getPageSource().contains("MOBILE TESTING")) {
+            Assert.assertTrue(true, "Mobile Testing Link Found");
+        } else {
+            Assert.assertTrue(false, "Failed: Link not found");
+        }
+
+    }
+	
+//	@BeforeMethod(groups = { "Item Detail", "CreateAccount", "Newsletter", "Contact Us", "Search", "Shopping" })
+	@BeforeMethod(groups = {"Item Detail", "Shopping"})
+	@Parameters(value= {"node","version", "browser"})
+	public void beforeMethod(String node, String version, String browser) throws MalformedURLException {
+//		System.setProperty("webdriver.chrome.driver", "D:\\Study\\Selenium\\driver\\chromedriver.exe");
+//		System.setProperty("webdriver.chrome.driver", "./webdriver/chromedriver.exe");
+//		driver = new ChromeDriver();
+//		driver.manage().window().maximize();
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		
+//		nodeURL = "http://10.10.31.80:19610/wd/hub";
+		DesiredCapabilities capability;
+		if (browser.equalsIgnoreCase("firefox")) {
+	        capability = DesiredCapabilities.firefox();
+	        capability.setBrowserName("firefox");
+	        capability.setPlatform(Platform.WINDOWS);
+	        capability.setVersion(version);
+	        driver = new RemoteWebDriver(new URL(node), capability);
+		} else if (browser.equalsIgnoreCase("chrome")) {
+	        capability = DesiredCapabilities.chrome();
+	        capability.setBrowserName("chrome");
+	        capability.setPlatform(Platform.WINDOWS);
+//	        capability.setVersion(version);
+	        driver = new RemoteWebDriver(new URL(node), capability);
+		}
+	}
+
+//	@AfterMethod(groups = { "Item Detail", "CreateAccount", "Newsletter", "Contact Us", "Search", "Shopping" })
+	@AfterMethod (groups = {"Item Detail", "Shopping"})
 	public void afterMethod() {
+		driver.quit();
 	}
 }

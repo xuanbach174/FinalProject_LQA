@@ -1,0 +1,18 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name  = "Parallel Test Suite" thread-count = "2" parallel ="tests">
+	<test name="chrome">
+		<parameter name = "platform"	value = "windows"></parameter>
+		<parameter name = "node"	value = "http://10.10.31.76:33412/wd/hub"></parameter>
+		<parameter name = "browser" value ="chrome"></parameter>
+		<parameter name = "version" value = "83"></parameter>
+		<groups>
+			<run>
+				<include name="Shopping" />
+			</run>
+		</groups>
+		<classes>
+			<class name="com.project.test.Final_Project" />	
+        </classes>
+	</test>	
+</suite>
