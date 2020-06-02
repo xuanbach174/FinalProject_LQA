@@ -5,9 +5,29 @@
     <classes>
       <class name="com.project.test.Final_Project">
         <methods>
-          <include name="beforeMethod"/>
+          <include name="searchkeyworkSuggestion"/>
+          <include name="checkSearchPlaceHolder"/>
+          <include name="searchResult"/>
+          <include name="purchaseReductionProduct"/>
+          <include name="interrupCheckOut"/>
           <include name="afterMethod"/>
+          <include name="checkTotalPrice"/>
+          <include name="checkEmailP2"/>
+          <include name="sampleTest"/>
+          <include name="creatEmail"/>
+          <include name="checkNoSearchResult"/>
+          <include name="beforeMethod"/>
+          <include name="compareSuggAndActual"/>
+          <include name="TC11_3"/>
+          <include name="checkPriceInfo"/>
+          <include name="TC11_2"/>
           <include name="sendToFriend"/>
+          <include name="testCase11_1"/>
+          <include name="checkEmail"/>
+          <include name="TC11_4"/>
+          <include name="sharetoTwitter"/>
+          <include name="createInvalidEmail"/>
+          <include name="writeAComment"/>
         </methods>
       </class> <!-- com.project.test.Final_Project -->
     </classes>

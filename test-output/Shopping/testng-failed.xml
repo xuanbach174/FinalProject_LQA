@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Shopping]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Shopping(failed)">
+    <groups>
+      <run>
+        <include name="Shopping"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.project.test.Final_Project">
+        <methods>
+          <include name="purchaseReductionProduct"/>
+          <include name="interrupCheckOut"/>
+          <include name="checkTotalPrice"/>
+        </methods>
+      </class> <!-- com.project.test.Final_Project -->
+    </classes>
+  </test> <!-- Shopping(failed) -->
+</suite> <!-- Failed suite [Shopping] -->

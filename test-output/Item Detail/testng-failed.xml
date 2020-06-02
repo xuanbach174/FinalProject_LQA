@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Item Detail]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Item Detail(failed)">
+    <groups>
+      <run>
+        <include name="Item Detail"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.project.test.Final_Project">
+        <methods>
+          <include name="beforeMethod"/>
+          <include name="TC11_3"/>
+          <include name="TC11_2"/>
+          <include name="sendToFriend"/>
+          <include name="testCase11_1"/>
+          <include name="TC11_4"/>
+          <include name="sharetoTwitter"/>
+          <include name="writeAComment"/>
+        </methods>
+      </class> <!-- com.project.test.Final_Project -->
+    </classes>
+  </test> <!-- Item Detail(failed) -->
+</suite> <!-- Failed suite [Item Detail] -->

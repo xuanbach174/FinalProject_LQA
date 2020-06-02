@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [CreateAccount]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="CreateAccount(failed)">
+    <groups>
+      <run>
+        <include name="CreateAccount"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.project.test.Final_Project">
+        <methods>
+          <include name="creatEmail" invocation-numbers="0 1"/>
+          <include name="createInvalidEmail" invocation-numbers="0"/>
+        </methods>
+      </class> <!-- com.project.test.Final_Project -->
+    </classes>
+  </test> <!-- CreateAccount(failed) -->
+</suite> <!-- Failed suite [CreateAccount] -->

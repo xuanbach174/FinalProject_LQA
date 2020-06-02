@@ -8,9 +8,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class ProductDetail extends Base{
-	By PROFILE_PICTURE_PRODUCT = By.xpath("//*[@id=\"bigpic\"]");
-	By PROFILE_PICTURE_PRODUCT_LARGE = By.xpath("//*[@class=\"fancybox-wrap fancybox-desktop fancybox-type-image fancybox-opened\"]");
-	By PROFILE_NAME = By.xpath("//*[@class=\"child\"]");
+	
+	public By MAIN_PICTURE = By.xpath("//img[@id=\"bigpic\"]");
+	public By ITEM_NAME = By.xpath("//div[contains(@class,\"pb-center-column\")]/h1[@itemprop=\"name\"]");
+	public By ZOOMED_PICTURE = By.xpath("//*[@class=\"fancybox-inner\"]/img");
+	public By ZOOMED_ITEM_NAME = By.xpath("//*[@class=\"child\"]");
+	public By BTN_VIEW_LARGE = By.xpath("//*[contains(@class,\"span_link\")]");
+	public By BTN_CLOSE_LARGE_IMAGE = By.xpath("//*[contains(@class,\"fancybox-close\")]");
+	public By INP_QUANTITY = By.xpath("//*[@id=\"quantity_wanted\"]");
+	public By BTN_ADD_TO_CART = By.xpath("//*[@id=\"add_to_cart\"]/button");
+	public By MSG_NULL_QUANTITY = By.xpath("//*[@class=\"fancybox-error\"]");
+	public By MSG_ADD_SUCCESFUL = By.xpath("//*[@id=\"layer_cart\"]/div[@class=\"clearfix\"]");
+	public By BTN_CLOSE_SUCCESSFUL_MESSAGE = By.xpath("//*[@class=\"cross\"]");
+	public By BTN_VIEW_CART = By.xpath("//*[@title=\"View my shopping cart\"]");
+	
+	
+	//Twitter testcase
 	By TWITTER_BUTTON = By.xpath("//*[@class = \"btn btn-default btn-twitter\"]");
 	By TWITTER_EMAIL = By.xpath("//*[@id=\"username_or_email\"]");
 	By TWITTER_PASS = By.xpath("//*[@id=\"password\"]");
@@ -52,29 +65,43 @@ public class ProductDetail extends Base{
 		this.driver = driver;
 	}
 	
-	public void clickProfilePictureOfProduct () {
-		driver.findElement(PROFILE_PICTURE_PRODUCT).click();
-	}
-	public void getWidthHeightLargeImg () {
-		Dimension size = driver.findElement(PROFILE_PICTURE_PRODUCT_LARGE).getSize();
-		widthlargeimg = size.getWidth();
-		heightlargeimg = driver.findElement(PROFILE_PICTURE_PRODUCT_LARGE).getSize().getHeight();
-		
+	public String getItemName() {
+		return driver.findElement(ITEM_NAME).getText();
 	}
 	
-	public void getWidthHeightProfileImg () {
-		widthprofileimg = driver.findElement(PROFILE_PICTURE_PRODUCT).getSize().getWidth();
-		heightprofileimg = driver.findElement(PROFILE_PICTURE_PRODUCT).getSize().getHeight();
+	public String getZoomedItemName() {
+		return driver.findElement(ZOOMED_ITEM_NAME).getText();
 	}
 	
-	public void getLocationProductName() {
-		productnameinlargeimgY = driver.findElement(PROFILE_NAME).getLocation().getY();
-		productname = driver.findElement(PROFILE_NAME).getText();
+	public void clickOnBigImage() {
+		driver.findElement(MAIN_PICTURE).click();
 	}
 	
+	public void clickViewLargeButton() {
+		driver.findElement(BTN_VIEW_LARGE).click();
+	}
 	
-	public void getLocationLargeImg() {
-		largepictureproductY = driver.findElement(By.xpath("//*[@id=\"product\"]/div[2]/div/div[1]/div/img")).getLocation().getY();
+	public void closeLargeImage() {
+		driver.findElement(BTN_CLOSE_LARGE_IMAGE).click();
+	}
+	
+	public void changeQuantity(String quantity) {
+		driver.findElement(INP_QUANTITY).clear();
+		driver.findElement(INP_QUANTITY).sendKeys(quantity);
+	}
+	
+	public void clickAddToCart() {
+		driver.findElement(BTN_ADD_TO_CART).click();
+	}
+	
+	public void closeSuccesfulMessage() {
+		driver.findElement(BTN_CLOSE_SUCCESSFUL_MESSAGE).click();
+	}
+	
+	//checkout -> payment
+	public ShoppingCart viewCart() {
+		driver.findElement(BTN_VIEW_CART).click();
+		return new ShoppingCart(driver);
 	}
 	
 	
